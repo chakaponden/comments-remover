@@ -1,4 +1,5 @@
 #include <iostream>
+#include <cstring>
 
 #include "CommentRemover.h"
 
@@ -10,6 +11,11 @@ int main(int argc, char *argv[])
                   << "Input file path as first cmd argument." << std::endl
                   << "Output file path as second cmd argument." << std::endl
                   << "Example: ./comment-remover ./in ./out" << std::endl;
+        return -1;
+    }
+    else if(!std::strcmp(argv[1], argv[2]))
+    {
+        std::cerr << "Input and output file paths can't be equal" << std::endl;
         return -1;
     }
     CommentRemover remover(argv[1], argv[2]);

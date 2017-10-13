@@ -38,10 +38,15 @@ std::string CommentRemover::GetOutputFilePath() const
 bool CommentRemover::Execute()
 {
     std::ifstream inputFile(_inputFilePath);
-    std::ofstream outputFile(_outputFilePath);
-    if(!inputFile || !outputFile)
+    if(!inputFile)
     {
         return false;
+    }
+    // do not open/create output file is error open input file
+    std::ofstream outputFile(_outputFilePath);
+    if(!outputFile)
+    {
+    	return false;
     }
     std::string inputFileData;
     // read all data from file
