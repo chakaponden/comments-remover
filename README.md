@@ -5,7 +5,7 @@ Save result in new file.
 
 ### ENVIRONMENT:
  - gcc 5.4.0
- - cmake 2.8.0
+ - qt 5.7.0
 
 ---
 
