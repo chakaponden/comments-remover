@@ -8,10 +8,3 @@ Save result in new file.
  - qt 5.7.0
 
 ---
-
-### HOW-TO:
-	cmake "path-to-sources"
-	make
-	./comments-remover ./in ./out
-
----
