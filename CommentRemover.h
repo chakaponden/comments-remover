@@ -35,6 +35,18 @@ public:
     ///
     static std::string Execute(std::string inputString);
 
+    ///
+    /// \brief Execute
+    /// \param inputString
+    /// \param commentStart: delimeter begin comment section
+    /// \param commentEnd : delimeter end comment section
+    /// \param continueString : delimeter unite strings
+    /// \return modified result string without comments
+    ///
+    static std::string Execute(std::string inputString,
+                               const std::string& commentStart,
+                               const std::string& commentEnd,
+                               const std::string& continueString = "\\\n");
 private:
     std::string _inputFilePath;
     std::string _outputFilePath;

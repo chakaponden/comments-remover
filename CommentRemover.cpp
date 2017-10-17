@@ -57,21 +57,32 @@ bool CommentRemover::Execute()
 
 std::string CommentRemover::Execute(std::string inputString)
 {
-    // while find any match
-    while(inputString.find("/*") != std::string::npos)
+    // remove multiline comments: /* ... */
+    // then remove single line comments: //
+    return Execute(Execute(inputString, "/*", "*/", "\\\n"), "//", "\n", "\\\n");
+}
+
+std::string CommentRemover::Execute(std::string inputString,
+                                    const std::string& commentStart,
+                                    const std::string& commentEnd,
+                                    const std::string& continueString)
+{
+    // while find any match delimeterStart
+    while(inputString.find(commentStart) != std::string::npos)
     {
-        // position to first entrance in file
-        size_t pos = inputString.find("/*");
-        // cut file to next entrance "*/"
-        inputString.erase(pos, (inputString.find("*/", pos) - pos) + 2);
-    }
-    // while find any match
-    while(inputString.find("//") != std::string::npos)
-    {
-        // position to first entrance in file
-        size_t pos = inputString.find("//");
-        // cut file to EOF
-        inputString.erase(pos, inputString.find("\n", pos) - pos);
+        size_t posCommentStart = inputString.find(commentStart);
+        size_t posCommentEnd = inputString.find(commentEnd, posCommentStart);
+        size_t posContinueStringStart = inputString.find(continueString, posCommentStart);
+        // remove all continueString sequences in comment
+        while(posContinueStringStart != std::string::npos &&
+              posContinueStringStart < posCommentEnd)
+        {
+            inputString.erase(posContinueStringStart, continueString.length());
+            posContinueStringStart = inputString.find(continueString, posCommentStart);
+            posCommentEnd = inputString.find(commentEnd, posCommentStart);
+        }
+        // cut file to next entrance delimeterEnd
+        inputString.erase(posCommentStart, (posCommentEnd - posCommentStart) + commentEnd.length());
     }
     return inputString;
 }
