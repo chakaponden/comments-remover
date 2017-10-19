@@ -71,15 +71,16 @@ std::string CommentRemover::Execute(std::string inputString,
     while(inputString.find(commentStart) != std::string::npos)
     {
         size_t posCommentStart = inputString.find(commentStart);
-        size_t posCommentEnd = inputString.find(commentEnd, posCommentStart);
-        size_t posContinueStringStart = inputString.find(continueString, posCommentStart);
+        size_t posSearchStart = posCommentStart + commentStart.length();
+        size_t posCommentEnd = inputString.find(commentEnd, posSearchStart);
+        size_t posContinueStringStart = inputString.find(continueString, posSearchStart);
         // remove all continueString sequences in comment
         while(posContinueStringStart != std::string::npos &&
               posContinueStringStart < posCommentEnd)
         {
             inputString.erase(posContinueStringStart, continueString.length());
-            posContinueStringStart = inputString.find(continueString, posCommentStart);
-            posCommentEnd = inputString.find(commentEnd, posCommentStart);
+            posContinueStringStart = inputString.find(continueString, posSearchStart);
+            posCommentEnd = inputString.find(commentEnd, posSearchStart);
         }
         // cut file to next entrance delimeterEnd
         inputString.erase(posCommentStart, (posCommentEnd - posCommentStart) + commentEnd.length());
